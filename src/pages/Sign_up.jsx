@@ -80,11 +80,19 @@ console.log("Sending:", { username, email, password });
     navigate("/home");
 
   } catch (error) {
-    console.log(error);
-    setError(
-      error.response?.data?.message || "Something went wrong"
-    );
+   
+  console.log("Full error:", error);
+
+  if (error.response) {
+    console.log("Backend error:", error.response.data);
+    setError(error.response.data.message || "Backend error");
+  } else if (error.request) {
+    setError("No response from server (backend sleeping or CORS issue)");
+  } else {
+    setError("Request error");
   }
+}
+  
 };
 
   return (
