@@ -4,7 +4,7 @@ import Navbar from "../Components/Navbar";
 import { Footer } from "../Components/Footer";
 import API from "../api/axios";
 import { useEffect } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 export const Sign_up = () => {
   const [mode, setMode] = useState("signup"); // signup | signin
@@ -38,7 +38,13 @@ export const Sign_up = () => {
   if (!email || !password) {
     setError("Email and password are required");
     return;
+
+    
   }
+  if(mode === "signup" && password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      return;
+    }
 
   if (mode === "signup" && !agree) {
     setError("You must accept the terms");
@@ -56,7 +62,7 @@ console.log("Sending:", { username, email, password });
         password
 
       });
-       toast.success(" sign up  successfully ");
+        toast.success("Signup successfully ");
     } else {
       // 👉 LOGIN API CALL
       res = await API.post("/login", {
@@ -127,7 +133,9 @@ console.log("Sending:", { username, email, password });
               className="border rounded w-full py-2 px-3"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              
             />
+            
 
             {mode === "signup" && (
               <div className="flex items-center">
